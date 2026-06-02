@@ -8,7 +8,7 @@ class InterfazVentana:
         self.pantalla = tk.Entry(ventana, font=("Arial", 20), justify ="center")
         self.pantalla.grid(row=0, column=0, columnspan=4, pady=10, padx=10, sticky="ew")#Usamos la caractetisica sticky para que se estire hacia donde queramos 
         #Le damos un tamaño fijo a la ventana 
-        self.ventana.geometry("410x280")
+        self.ventana.geometry("410x320")
         #Haecmos que cada columna de la ventana tenga "peso" para repartir el espacio equitativamente 
         self.ventana.grid_columnconfigure(0, weight=1)
         self.ventana.grid_columnconfigure(1, weight=1)
@@ -16,27 +16,12 @@ class InterfazVentana:
         self.ventana.grid_columnconfigure(3, weight=1)
         #Definimos los botones que se van a mostrar y los conectamos al programa
         #Botones del 0-9
-        #--------FILA 1--------
-        self.boton_1 = tk.Button(ventana, text= "1", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("1")) 
-        self.boton_1.grid(row=3, column=0, padx=1, pady=1)
-        self.boton_2 = tk.Button(ventana, text= "2", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("2"))
-        self.boton_2.grid(row=3, column=1, padx=1, pady=1)
-        self.boton_3 = tk.Button(ventana, text= "3", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("3")) 
-        self.boton_3.grid(row=3, column=2, padx=1, pady=1)  
-        #--------FILA 2--------
-        self.boton_4 = tk.Button(ventana, text= "4", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("4")) 
-        self.boton_4.grid(row=2, column=0, padx=1, pady=1)
-        self.boton_5 = tk.Button(ventana, text= "5", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("5")) 
-        self.boton_5.grid(row=2, column=1, padx=1, pady=1)
-        self.boton_6 = tk.Button(ventana, text= "6", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("6")) 
-        self.boton_6.grid(row=2, column=2, padx=1, pady=1)  
-        #--------FILA 3--------
-        self.boton_7 = tk.Button(ventana, text="7", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("7"))
-        self.boton_7.grid(row=1, column=0, padx=1, pady=1)
-        self.boton_8 = tk.Button(ventana, text="8", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("8"))
-        self.boton_8.grid(row=1, column=1, padx=1, pady=1)
-        self.boton_9 = tk.Button(ventana, text= "9", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("9")) 
-        self.boton_9.grid(row=1, column=2, padx=1, pady=1)
+        #--------BOTONES NUMERICOS--------
+        for numero_boton in range(1,10):
+             pos_fila = ((numero_boton - 1) // 3) + 1 
+             pos_columna = (numero_boton - 1) % 3
+             numero = tk.Button(ventana, text= numero_boton, font=("Arial",18), width=5, command=lambda n= numero_boton:self.pulsar_boton(n)) 
+             numero.grid(row=pos_fila, column=pos_columna, padx=1, pady=1)
         #--------FILA 4--------
         self.boton_0 = tk.Button(ventana, text= "0", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("0")) 
         self.boton_0.grid(row=4, column=1, padx=1, pady=1)
@@ -44,6 +29,8 @@ class InterfazVentana:
         self.boton_igual.grid(row=4, column=2, padx=1, pady=1)
         self.boton_c = tk.Button(ventana, text="C", font=("Arial",18), width=5, command=self.limpiar)
         self.boton_c.grid(row=4, column=0, padx=1, pady=1)
+        self.boton_punto = tk.Button(ventana, text=".", font=("Arial",18), width=5, command= lambda: self.presionar_punto())
+        self.boton_punto.grid(row=5, column=0, padx=1, pady=1)
         #--------OPERACIONES--------
         self.boton_menos = tk.Button(ventana, text="-", font=("Arial",18), width=5, command=lambda: self.pulsar_boton("-"))
         self.boton_menos.grid(row=4, column=3, padx=1, pady=1)
@@ -69,10 +56,27 @@ class InterfazVentana:
         except:
             self.pantalla.delete(0,tk.END)
             self.pantalla.insert(tk.END, "Error:Operacion inexistente ")
+    def presionar_punto(self):
+        mi_pantalla = self.pantalla.get()
+        if mi_pantalla == "":
+            self.pantalla.insert(tk.END,"0.")
+            return
+        ultimo_trozo = mi_pantalla
+        for operador in ["+","-","*","/"]:
+            if operador in ultimo_trozo:
+                ultimo_trozo= ultimo_trozo.split(operador)[-1]
+        if "." not in ultimo_trozo:
+            if mi_pantalla == "":
+                self.pantalla.insert(tk.END,"0.")
+            else:
+                self.pantalla.insert(tk.END,".")
+
 #Llamamos a la ventana de la interfaz y la metemos en un bucle 
 raiz = tk.Tk()
 app = InterfazVentana(raiz)
 raiz.mainloop()
+#--------ATENCION---------
+#Esto es el codigo antiguo en el que definiamos las operaciones una a una y sin interfaz
 """
 #Definimos los inputs que le vamos a pedir al usuario
 #Lo hacemos fuera de la clase calculadora para poder usarlos en otra clase 
