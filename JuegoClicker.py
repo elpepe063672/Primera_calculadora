@@ -29,6 +29,13 @@ class JuegoClicker:
         self.oro.pack(pady=5)
         #Boton de invocar nuevo mostruo
         self.invocar = tk.Button(self.ventana, text="INVOCAR", font=("Arial",20), command=self.invocar_monstruo)
+        #Boton para ir a la tienda 
+        self.tienda = tk.Button(self.ventana, text="TIENDA", font=("Arial",12), command=self.abrir_tienda)
+        self.tienda.pack(pady=5)
+        #Marco de la tienda 
+        self.recuadro_tienda = tk.Frame(self.ventana,  bg="#000000", bd= 4, relief="sunken")
+        #Narrador tienda 
+        self.narrador_tienda = tk.Label(self.recuadro_tienda, text=("BIENVENIDO A LA TIENDA"), font=("Times new roman",12),bg="#000000", fg="#FFFFFF")
         #Ejecutamos el loop para que s emuestre la ventana 
         self.ventana.mainloop()
     def atacar(self):
@@ -57,4 +64,14 @@ class JuegoClicker:
             self.invocar.pack_forget()
         else:
             self.invocar.config(state="disabled")
+    def abrir_tienda(self):
+        self.invocar.forget()
+        self.vida.forget()
+        self.narrador.forget()
+        self.boton_ataque.forget()
+        self.recuadro_vida.forget()
+        self.oro.forget()
+        self.tienda.forget()
+        self.recuadro_tienda.pack(pady=5)
+        pass
 JuegoClicker()
