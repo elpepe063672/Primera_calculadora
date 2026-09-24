@@ -1,0 +1,18 @@
+columnas = 8
+filas = 8
+
+
+for x in range(columnas):
+    print(" + " * x)
+    
+tamaño = 8
+for x in range(tamaño,0,-1):
+    print("  " * x + "* " * (tamaño - x) + "* " * (tamaño - x))
+for j in range(tamaño):
+    print("  " * j + "* " * (tamaño - j))
+       
+   
+
+       
+  
+
